@@ -34,6 +34,7 @@ const insertStandings = (req, res, next) => {
 };
 
 const updateStandings = (req, res) => {
+  console.log(req.body)
   req.body.forEach((i) => {
     Standing.findOneAndUpdate({ "teamId": i.team.id }, {
       "$set": {
@@ -61,8 +62,4 @@ const updateStandings = (req, res) => {
   res.send(['ok']);
 };
 
-
-
-module.exports = {
-  getStandings, insertStandings, updateStandings
-};
+module.exports = { getStandings, insertStandings, updateStandings };
