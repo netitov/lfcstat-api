@@ -9,7 +9,8 @@ const getStandings = (req, res, next) => {
 };
 
 const insertStandings = (req, res, next) => {
-  const table = req.body.map((i) => {
+  const data = req.body[0].standings_rows;
+  const table = data.map((i) => {
     return {
       teamId: i.team.id,
       teamName: i.team.name_short,
@@ -34,8 +35,8 @@ const insertStandings = (req, res, next) => {
 };
 
 const updateStandings = (req, res) => {
-  console.log(req.body)
-  req.body.forEach((i) => {
+  const data = req.body[0].standings_rows;
+  data.forEach((i) => {
     Standing.findOneAndUpdate({ "teamId": i.team.id }, {
       "$set": {
         "teamId": i.team.id,

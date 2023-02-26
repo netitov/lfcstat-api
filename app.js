@@ -5,18 +5,23 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const standingsRoute = require('./routes/standings');
 const apiCallsRouter = require('./routes/apicalls');
-const { updateStandings } = require('./utils/api');
+const eventsRouter = require('./routes/events');
+const { updateStandings, updateEvents, addEvents, addStandigs } = require('./utils/api');
 
 const { PORT = 3004 } = process.env;
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/pltable', {
+
+mongoose.connect('mongodb://localhost:27017/lfcstats', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 app.use(cors());
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
+
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -26,6 +31,7 @@ app.get('/crash-test', () => {
 
 app.use('/', standingsRoute);
 app.use('/', apiCallsRouter);
+app.use('/', eventsRouter);
 
 function getData() {
   console.log('Hi!')
@@ -41,4 +47,6 @@ function test2() {
 app.listen(PORT, () => {
   console.log(`Application is running on port ${PORT}`);
   //updateStandings();
+  //updateEvents();
 });
+

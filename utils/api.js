@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { RAPID_API_PL, SERVER_API } = require('../utils/config');
+const { STANDINGS_URL, SERVER_API, EVENTS_URL } = require('../utils/config');
 
 function checkServerResponse(res) {
   if (res.ok) {
@@ -8,9 +8,8 @@ function checkServerResponse(res) {
   return Promise.reject(res)
 }
 
-//updating league table
-function updateStandings() {
-  fetch(RAPID_API_PL, {
+function _getAndInsert(url, route) {
+  fetch(url, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -20,14 +19,31 @@ function updateStandings() {
   })
   .then(checkServerResponse)
   .then((i) => {
-    updateData(i.data[0].standings_rows, 'standings');//update data in league table
-    insertData({ date: new Date(), route: RAPID_API_PL }, 'apicalls');//logging api calls
+    debugger
+    _insertInitData(i.data, route);
+    _logCalls({ date: new Date(), route: url }, 'apicalls');
   })
   .catch((err) => console.log(err))
 }
 
+function _getAndUpdate(url, route) {
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-RapidAPI-Key': process.env.API_KEY,
+      'X-RapidAPI-Host': process.env.API_HOST
+    }
+  })
+  .then(checkServerResponse)
+  .then((i) => {
+    _updateData(i.data, route);
+    _logCalls({ date: new Date(), route: url }, 'apicalls');
+  })
+  .catch((err) => console.log(err))
+}
 
-function updateData(data, route) {
+function _updateData(data, route) {
   fetch(`${SERVER_API}/${route}`, {
     method: 'PATCH',
     headers: {'Content-Type': 'application/json'},
@@ -37,8 +53,8 @@ function updateData(data, route) {
   .catch((err) => console.log(err))
 }
 
-
-function insertData(data, route) {
+//log queris to rapid api
+function _logCalls(data, route) {
   fetch(`${SERVER_API}/${route}`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -48,6 +64,53 @@ function insertData(data, route) {
   .catch((err) => console.log(err))
 }
 
+//add new data to DB
+function _insertInitData(data, route) {
+  fetch(`${SERVER_API}/${route}`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  })
+  .then(checkServerResponse)
+  .catch((err) => console.log(err))
+}
+
+//updating league table
+function updateStandings() {
+  fetch(STANDINGS_URL, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-RapidAPI-Key': process.env.API_KEY,
+      'X-RapidAPI-Host': process.env.API_HOST
+    }
+  })
+  .then(checkServerResponse)
+  .then((i) => {
+    _updateData(i.data[0].standings_rows, 'standings');//update data in league table
+    _logCalls({ date: new Date(), route: STANDINGS_URL }, 'apicalls');//logging api calls
+  })
+  .catch((err) => console.log(err))
+}
 
 
-module.exports = { updateStandings };
+//add new table to DB
+function addEvents() {
+  _getAndInsert(EVENTS_URL, 'events');
+}
+
+//add new table to DB
+function addStandigs() {
+  _getAndInsert(STANDINGS_URL, 'standings');
+}
+
+function updateStandings() {
+  _getAndUpdate(STANDINGS_URL, 'standings');
+}
+
+function updateEvents() {
+  _getAndUpdate(EVENTS_URL, 'events');
+}
+
+
+module.exports = { updateStandings, updateEvents, addEvents, addStandigs };
