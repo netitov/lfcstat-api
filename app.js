@@ -6,7 +6,8 @@ const cors = require('cors');
 const standingsRoute = require('./routes/standings');
 const apiCallsRouter = require('./routes/apicalls');
 const eventsRouter = require('./routes/events');
-const { updateStandings, updateEvents, addEvents, addStandigs } = require('./utils/api');
+const newsRouter = require('./routes/news');
+const { updateStandings, updateEvents, addEvents, addStandigs, updateNews } = require('./utils/api');
 
 const { PORT = 3004 } = process.env;
 const app = express();
@@ -32,6 +33,7 @@ app.get('/crash-test', () => {
 app.use('/', standingsRoute);
 app.use('/', apiCallsRouter);
 app.use('/', eventsRouter);
+app.use('/', newsRouter);
 
 function getData() {
   console.log('Hi!')
@@ -48,5 +50,6 @@ app.listen(PORT, () => {
   console.log(`Application is running on port ${PORT}`);
   //updateStandings();
   //updateEvents();
+  //updateNews();
 });
 

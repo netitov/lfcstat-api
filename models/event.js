@@ -12,7 +12,7 @@ const eventSchema = new mongoose.Schema({
     type: String,
   },
   startAt: {
-    type: Date,
+    type: String,
   },
   status: {
     type: String,
@@ -22,6 +22,18 @@ const eventSchema = new mongoose.Schema({
   },
   awayTeamId: {
     type: Number,
+  },
+  homeTeamName: {
+    type: String,
+  },
+  awayTeamName: {
+    type: String,
+  },
+  homeTeamLogo: {
+    type: String,
+  },
+  awayTeamLogo: {
+    type: String,
   },
   homeScore: {
     type: Number,

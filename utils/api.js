@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { STANDINGS_URL, SERVER_API, EVENTS_URL } = require('../utils/config');
+const { STANDINGS_URL, SERVER_API, EVENTS_URL, NEWS_URL } = require('../utils/config');
 
 function checkServerResponse(res) {
   if (res.ok) {
@@ -32,12 +32,14 @@ function _getAndUpdate(url, route) {
     headers: {
       'Content-Type': 'application/json',
       'X-RapidAPI-Key': process.env.API_KEY,
-      'X-RapidAPI-Host': process.env.API_HOST
+      /* 'X-RapidAPI-Host': process.env.API_HOST */
     }
   })
   .then(checkServerResponse)
   .then((i) => {
-    _updateData(i.data, route);
+    debugger
+    const data = i.data === undefined ? i.value : i.data;
+    _updateData(data, route);
     _logCalls({ date: new Date(), route: url }, 'apicalls');
   })
   .catch((err) => console.log(err))
@@ -112,5 +114,9 @@ function updateEvents() {
   _getAndUpdate(EVENTS_URL, 'events');
 }
 
+function updateNews() {
+  _getAndUpdate(NEWS_URL, 'news');
+}
 
-module.exports = { updateStandings, updateEvents, addEvents, addStandigs };
+
+module.exports = { updateStandings, updateEvents, addEvents, addStandigs, updateNews };
