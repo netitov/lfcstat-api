@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { STANDINGS_URL, SERVER_API, EVENTS_URL, NEWS_URL } = require('../utils/config');
+const { STANDINGS_URL, SERVER_API, EVENTS_URL, NEWS_URL, TEAM_STATS_URL } = require('../utils/config');
 
 function checkServerResponse(res) {
   if (res.ok) {
@@ -118,5 +118,9 @@ function updateNews() {
   _getAndUpdate(NEWS_URL, 'news');
 }
 
+function updateTeamStats() {
+  _getAndUpdate(TEAM_STATS_URL, 'team-stats');
+}
 
-module.exports = { updateStandings, updateEvents, addEvents, addStandigs, updateNews };
+
+module.exports = { updateStandings, updateEvents, addEvents, addStandigs, updateNews, updateTeamStats };

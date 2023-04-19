@@ -1,0 +1,55 @@
+const mongoose = require('mongoose');
+
+const teamStatSchema = new mongoose.Schema({
+  tournament: { type: String },
+  year: { type: String },
+  id: { type: Number },
+  goalsScored: { type: Number },
+  goalsConceded: { type: Number },
+  shots: { type: Number },
+  penaltiesTaken: { type: Number },
+  penaltyGoals: { type: Number },
+  freeKickGoals: { type: Number },
+  freeKickShots: { type: Number },
+  goalsFromInsideTheBox: { type: Number },
+  goalsFromOutsideTheBox: { type: Number },
+  shotsFromInsideTheBox: { type: Number },
+  shotsFromOutsideTheBox: { type: Number },
+  headedGoals: { type: Number },
+  bigChancesCreated: { type: Number },
+  bigChancesMissed: { type: Number },
+  shotsOnTarget: { type: Number },
+  shotsOffTarget: { type: Number },
+  successfulDribbles: { type: Number },
+  dribbleAttempts: { type: Number },
+  corners: { type: Number },
+  hitWoodwork: { type: Number },//штанги
+  averageBallPossession: { type: Number },
+  accuratePassesPercentage: { type: Number },
+  accurateOwnHalfPassesPercentage: { type: Number },
+  accurateOppositionHalfPassesPercentage: { type: Number },
+  accurateLongBallsPercentage: { type: Number },
+  accurateCrossesPercentage: { type: Number },
+  totalLongBalls: { type: Number },
+  totalCrosses: { type: Number },
+  cleanSheets: { type: Number },
+  tackles: { type: Number },//отборы
+  interceptions: { type: Number },//перехваты
+  errorsLeadingToGoal: { type: Number },
+  penaltiesCommited: { type: Number },
+  duelsWonPercentage: { type: Number },
+  groundDuelsWonPercentage: { type: Number },
+  offsides: { type: Number },
+  fouls: { type: Number },
+  yellowCards: { type: Number },
+  redCards: { type: Number },
+  avgRating: { type: Number },
+  bigChancesCreatedAgainst: { type: Number },
+  shotsAgainst: { type: Number },
+  shotsFromInsideTheBoxAgainst: { type: Number },
+  shotsOnTargetAgainst: { type: Number },
+  yellowCardsAgainst: { type: Number },
+  matches: { type: Number }
+});
+
+module.exports = mongoose.model('teamStat', teamStatSchema);
