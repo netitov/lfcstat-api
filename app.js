@@ -8,7 +8,8 @@ const apiCallsRouter = require('./routes/apicalls');
 const eventsRouter = require('./routes/events');
 const newsRouter = require('./routes/news');
 const teamStatsRouter = require('./routes/teamStats');
-const { updateStandings, updateEvents, addEvents, addStandigs, updateNews, updateTeamStats } = require('./utils/api');
+const videosRouter = require('./routes/videos');
+const { updateStandings, updateEvents, addEvents, addStandigs, updateNews, updateTeamStats, updateVideo } = require('./utils/api');
 
 const { PORT = 3004 } = process.env;
 const app = express();
@@ -36,6 +37,7 @@ app.use('/', apiCallsRouter);
 app.use('/', eventsRouter);
 app.use('/', newsRouter);
 app.use('/', teamStatsRouter);
+app.use('/', videosRouter);
 
 function getData() {
   console.log('Hi!')
@@ -54,5 +56,6 @@ app.listen(PORT, () => {
   //updateEvents();
   //updateNews();
   //updateTeamStats();
+  //updateVideo();
 });
 

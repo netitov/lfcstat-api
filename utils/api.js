@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { STANDINGS_URL, SERVER_API, EVENTS_URL, NEWS_URL, TEAM_STATS_URL } = require('../utils/config');
+const { STANDINGS_URL, SERVER_API, EVENTS_URL, NEWS_URL, TEAM_STATS_URL, YOUTUBE_URL } = require('../utils/config');
 
 function checkServerResponse(res) {
   if (res.ok) {
@@ -40,6 +40,22 @@ function _getAndUpdate(url, route) {
     debugger
     const data = i.data === undefined ? i.value : i.data;
     _updateData(data, route);
+    _logCalls({ date: new Date(), route: url }, 'apicalls');
+  })
+  .catch((err) => console.log(err))
+}
+
+function _getAndUpdateVideo(url, route) {
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  })
+  .then(checkServerResponse)
+  .then((i) => {
+    debugger
+    _updateData(i.items, route);
     _logCalls({ date: new Date(), route: url }, 'apicalls');
   })
   .catch((err) => console.log(err))
@@ -95,7 +111,6 @@ function updateStandings() {
   .catch((err) => console.log(err))
 }
 
-
 //add new table to DB
 function addEvents() {
   _getAndInsert(EVENTS_URL, 'events');
@@ -122,5 +137,9 @@ function updateTeamStats() {
   _getAndUpdate(TEAM_STATS_URL, 'team-stats');
 }
 
+function updateVideo() {
+  _getAndUpdateVideo(YOUTUBE_URL, 'videos');
+}
 
-module.exports = { updateStandings, updateEvents, addEvents, addStandigs, updateNews, updateTeamStats };
+
+module.exports = { updateStandings, updateEvents, addEvents, addStandigs, updateNews, updateTeamStats, updateVideo };
