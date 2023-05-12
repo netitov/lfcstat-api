@@ -8,6 +8,16 @@ const getData = (req, res, next) => {
     .catch(next);
 };
 
+const dropCollection = (req, res) => {
+  video.deleteMany({})
+    .then((i) => {
+      res.send(i);
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+};
+
 const updateData = (req, res) => {
   req.body.filter((i) => !i.snippet.title.includes('#Shorts')).forEach((i) => {
     video.findOneAndUpdate({ 'id': i.id.videoId}, {
@@ -27,4 +37,4 @@ const updateData = (req, res) => {
   res.send(['ok']);
 };
 
-module.exports = { getData, updateData };
+module.exports = { getData, updateData, dropCollection };

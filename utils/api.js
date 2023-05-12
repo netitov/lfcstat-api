@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { STANDINGS_URL, SERVER_API, EVENTS_URL, NEWS_URL, TEAM_STATS_URL, YOUTUBE_URL } = require('../utils/config');
+const { STANDINGS_URL, SERVER_API, EVENTS_URL, NEWS_URL, TEAM_STATS_URL, YOUTUBE_URL, PLAYER_STATS_URL } = require('../utils/config');
 
 function checkServerResponse(res) {
   if (res.ok) {
@@ -8,7 +8,7 @@ function checkServerResponse(res) {
   return Promise.reject(res)
 }
 
-function _getAndInsert(url, route) {
+function getAndInsert(url, route) {
   fetch(url, {
     method: 'GET',
     headers: {
@@ -20,13 +20,13 @@ function _getAndInsert(url, route) {
   .then(checkServerResponse)
   .then((i) => {
     debugger
-    _insertInitData(i.data, route);
-    _logCalls({ date: new Date(), route: url }, 'apicalls');
+    insertInitData(i.data, route);
+    logCalls({ date: new Date(), route: url }, 'apicalls');
   })
   .catch((err) => console.log(err))
 }
 
-function _getAndUpdate(url, route) {
+function getAndUpdate(url, route) {
   fetch(url, {
     method: 'GET',
     headers: {
@@ -37,15 +37,14 @@ function _getAndUpdate(url, route) {
   })
   .then(checkServerResponse)
   .then((i) => {
-    debugger
     const data = i.data === undefined ? i.value : i.data;
-    _updateData(data, route);
-    _logCalls({ date: new Date(), route: url }, 'apicalls');
+    updateData(data, route);
+    logCalls({ date: new Date(), route: url }, 'apicalls');
   })
   .catch((err) => console.log(err))
 }
 
-function _getAndUpdateVideo(url, route) {
+function getAndUpdateVideo(url, route) {
   fetch(url, {
     method: 'GET',
     headers: {
@@ -54,14 +53,13 @@ function _getAndUpdateVideo(url, route) {
   })
   .then(checkServerResponse)
   .then((i) => {
-    debugger
-    _updateData(i.items, route);
-    _logCalls({ date: new Date(), route: url }, 'apicalls');
+    updateData(i.items, route);
+    logCalls({ date: new Date(), route: url }, 'apicalls');
   })
   .catch((err) => console.log(err))
 }
 
-function _updateData(data, route) {
+function updateData(data, route) {
   fetch(`${SERVER_API}/${route}`, {
     method: 'PATCH',
     headers: {'Content-Type': 'application/json'},
@@ -71,8 +69,18 @@ function _updateData(data, route) {
   .catch((err) => console.log(err))
 }
 
+function deleteData(route) {
+  fetch(`${SERVER_API}/${route}`, {
+    method: 'DELETE',
+    headers: {'Content-Type': 'application/json'},
+  })
+  .then(checkServerResponse)
+  //.then(() => getAndUpdate(NEWS_URL, route))
+  .catch((err) => console.log(err))
+}
+
 //log queris to rapid api
-function _logCalls(data, route) {
+function logCalls(data, route) {
   fetch(`${SERVER_API}/${route}`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -83,7 +91,7 @@ function _logCalls(data, route) {
 }
 
 //add new data to DB
-function _insertInitData(data, route) {
+function insertInitData(data, route) {
   fetch(`${SERVER_API}/${route}`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -105,41 +113,47 @@ function updateStandings() {
   })
   .then(checkServerResponse)
   .then((i) => {
-    _updateData(i.data[0].standings_rows, 'standings');//update data in league table
-    _logCalls({ date: new Date(), route: STANDINGS_URL }, 'apicalls');//logging api calls
+    updateData(i.data[0].standings_rows, 'standings');//update data in league table
+    logCalls({ date: new Date(), route: STANDINGS_URL }, 'apicalls');//logging api calls
   })
   .catch((err) => console.log(err))
 }
 
 //add new table to DB
 function addEvents() {
-  _getAndInsert(EVENTS_URL, 'events');
+  getAndInsert(EVENTS_URL, 'events');
 }
 
 //add new table to DB
 function addStandigs() {
-  _getAndInsert(STANDINGS_URL, 'standings');
+  getAndInsert(STANDINGS_URL, 'standings');
 }
 
 function updateStandings() {
-  _getAndUpdate(STANDINGS_URL, 'standings');
+  getAndUpdate(STANDINGS_URL, 'standings');
 }
 
 function updateEvents() {
-  _getAndUpdate(EVENTS_URL, 'events');
+  getAndUpdate(EVENTS_URL, 'events');
 }
 
 function updateNews() {
-  _getAndUpdate(NEWS_URL, 'news');
+  deleteData('news');
+  getAndUpdate(NEWS_URL, 'news');
 }
 
 function updateTeamStats() {
-  _getAndUpdate(TEAM_STATS_URL, 'team-stats');
+  getAndUpdate(TEAM_STATS_URL, 'team-stats');
 }
 
 function updateVideo() {
-  _getAndUpdateVideo(YOUTUBE_URL, 'videos');
+  deleteData('videos');
+  getAndUpdateVideo(YOUTUBE_URL, 'videos');
+}
+
+function updatePlayerStats() {
+  getAndUpdate(PLAYER_STATS_URL, 'player-stats');
 }
 
 
-module.exports = { updateStandings, updateEvents, addEvents, addStandigs, updateNews, updateTeamStats, updateVideo };
+module.exports = { updateStandings, updateEvents, addEvents, addStandigs, updateNews, updateTeamStats, updateVideo, updatePlayerStats };

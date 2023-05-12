@@ -9,11 +9,12 @@ const eventsRouter = require('./routes/events');
 const newsRouter = require('./routes/news');
 const teamStatsRouter = require('./routes/teamStats');
 const videosRouter = require('./routes/videos');
-const { updateStandings, updateEvents, addEvents, addStandigs, updateNews, updateTeamStats, updateVideo } = require('./utils/api');
+const playerStatsRouter = require('./routes/playerStats');
+const { updateStandings, updateEvents, addEvents, addStandigs, updateNews, updateTeamStats,
+  updateVideo, updatePlayerStats } = require('./utils/api');
 
 const { PORT = 3004 } = process.env;
 const app = express();
-
 
 mongoose.connect('mongodb://localhost:27017/lfcstats', {
   useNewUrlParser: true,
@@ -38,24 +39,24 @@ app.use('/', eventsRouter);
 app.use('/', newsRouter);
 app.use('/', teamStatsRouter);
 app.use('/', videosRouter);
-
-function getData() {
-  console.log('Hi!')
-}
-
-function test2() {
-  const interval = setInterval(getData, 5000);
-  return () => clearInterval(interval);
-}
-
-//test2()
+app.use('/', playerStatsRouter);
 
 app.listen(PORT, () => {
   console.log(`Application is running on port ${PORT}`);
-  //updateStandings();
-  //updateEvents();
-  //updateNews();
-  //updateTeamStats();
-  //updateVideo();
+
+  //every 6 hours
+  setInterval(() => {
+    updateStandings();
+    updateEvents();
+    updateTeamStats();
+    updatePlayerStats();
+    updateVideo();
+  }, 1000 * 60 * 60 * 6);
+
+  //every 3 hours
+  setInterval(() => {
+    updateNews();
+  }, 1000 * 60 * 60 * 3);
+
 });
 

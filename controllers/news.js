@@ -37,11 +37,21 @@ const insertData = (req, res, next) => {
     .catch(next);
 };
 
+//clear data before inserting new
+const dropCollection = (req, res) => {
+  New.deleteMany({})
+    .then((i) => {
+      res.send(i);
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+};
+
 const updateData = (req, res) => {
   req.body.forEach((i) => {
     const image = i.image === undefined ? '' : i.image.thumbnail.contentUrl;
-    debugger
-    console.log(image)
+    //debugger
     New.findOneAndUpdate({ 'url': i.url }, {
       '$set': {
         'date': i.datePublished,
@@ -62,4 +72,4 @@ const updateData = (req, res) => {
   res.send(['ok']);
 };
 
-module.exports = { getData, insertData, updateData };
+module.exports = { getData, insertData, updateData, dropCollection };
