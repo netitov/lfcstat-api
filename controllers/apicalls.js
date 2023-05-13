@@ -10,7 +10,7 @@ const getApiCalls = (req, res, next) => {
 
 const insertApiCall = (req, res, next) => {
   const { date, route } = req.body;
-  //debugger
+  // debugger
   apiCall.create({ date, route })
     .then((i) => res.send(i))
     .catch((err) => {
@@ -19,4 +19,4 @@ const insertApiCall = (req, res, next) => {
     .catch(next);
 };
 
-module.exports = { insertApiCall, getApiCalls }
+module.exports = { insertApiCall, getApiCalls };

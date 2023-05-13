@@ -25,10 +25,10 @@ const insertData = (req, res, next) => {
       awayTeamName: i.away_team.name_short,
       homeTeamLogo: i.home_team.logo,
       awayTeamLogo: i.away_team.logo,
-      homeScore: homeScore,
-      awayScore: awayScore
-    }
-  })
+      homeScore,
+      awayScore,
+    };
+  });
   Event.create(table)
     .then((i) => res.send(i))
     .catch((err) => {
@@ -42,30 +42,30 @@ const updateData = (req, res) => {
     const round = i.round_info === null ? i.round_number : i.round_info.name;
     const homeScore = i.home_score === null ? 0 : i.home_score.current;
     const awayScore = i.away_score === null ? 0 : i.away_score.current;
-    Event.findOneAndUpdate({ 'id': i.id }, {
-      '$set': {
-        'id': i.id,
-        'challenge': i.challenge.name,
-        'roundInfo': round,
-        'startAt': i.start_at,
-        'status': i.status,
-        'homeTeamId': i.home_team_id,
-        'awayTeamId': i.away_team_id,
-        'homeTeamName': i.home_team.name_short,
-        'awayTeamName': i.away_team.name_short,
-        'homeTeamLogo': i.home_team.logo,
-        'awayTeamLogo': i.away_team.logo,
-        'homeScore': homeScore,
-        'awayScore': awayScore
-      }
-    }, { upsert : true })
+    Event.findOneAndUpdate({ id: i.id }, {
+      $set: {
+        id: i.id,
+        challenge: i.challenge.name,
+        roundInfo: round,
+        startAt: i.start_at,
+        status: i.status,
+        homeTeamId: i.home_team_id,
+        awayTeamId: i.away_team_id,
+        homeTeamName: i.home_team.name_short,
+        awayTeamName: i.away_team.name_short,
+        homeTeamLogo: i.home_team.logo,
+        awayTeamLogo: i.away_team.logo,
+        homeScore,
+        awayScore,
+      },
+    }, { upsert: true })
       .then(() => {
-        console.log('Ok')
+        console.log('Ok');
       })
       .catch((err) => {
-        console.log(err)
-      })
-  })
+        console.log(err);
+      });
+  });
   res.send(['ok']);
 };
 

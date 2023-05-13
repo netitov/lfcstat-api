@@ -6,22 +6,22 @@ const newSchema = new mongoose.Schema({
     required: true,
   },
   description: {
-    type: String
+    type: String,
   },
   name: {
-    type: String
+    type: String,
   },
   image: {
-    type: String
+    type: String,
   },
   source: {
-    type: String
+    type: String,
   },
   id: {
-    type: Number
+    type: Number,
   },
   url: {
-    type: String
+    type: String,
   },
 });
 

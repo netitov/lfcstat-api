@@ -25,10 +25,10 @@ const insertData = (req, res, next) => {
       awayTeamName: i.away_team.name_short,
       homeTeamLogo: i.home_team.logo,
       awayTeamLogo: i.away_team.logo,
-      homeScore: homeScore,
-      awayScore: awayScore
-    }
-  })
+      homeScore,
+      awayScore,
+    };
+  });
   New.create(table)
     .then((i) => res.send(i))
     .catch((err) => {
@@ -37,39 +37,41 @@ const insertData = (req, res, next) => {
     .catch(next);
 };
 
-//clear data before inserting new
+// clear data before inserting new
 const dropCollection = (req, res) => {
   New.deleteMany({})
     .then((i) => {
       res.send(i);
     })
     .catch((err) => {
-      console.log(err)
-    })
+      console.log(err);
+    });
 };
 
 const updateData = (req, res) => {
   req.body.forEach((i) => {
     const image = i.image === undefined ? '' : i.image.thumbnail.contentUrl;
-    //debugger
-    New.findOneAndUpdate({ 'url': i.url }, {
-      '$set': {
-        'date': i.datePublished,
-        'description': i.datePublished,
-        'name': i.name,
-        'image': image,
-        'source': i.provider[0].name,
-        'url': i.url
-      }
-    }, { upsert : true })
+    // debugger
+    New.findOneAndUpdate({ url: i.url }, {
+      $set: {
+        date: i.datePublished,
+        description: i.datePublished,
+        name: i.name,
+        image,
+        source: i.provider[0].name,
+        url: i.url,
+      },
+    }, { upsert: true })
       .then(() => {
-        console.log('Ok')
+        console.log('Ok');
       })
       .catch((err) => {
-        console.log(err)
-      })
-  })
+        console.log(err);
+      });
+  });
   res.send(['ok']);
 };
 
-module.exports = { getData, insertData, updateData, dropCollection };
+module.exports = {
+  getData, insertData, updateData, dropCollection,
+};

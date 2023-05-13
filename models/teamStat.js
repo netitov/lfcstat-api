@@ -23,7 +23,7 @@ const teamStatSchema = new mongoose.Schema({
   successfulDribbles: { type: Number },
   dribbleAttempts: { type: Number },
   corners: { type: Number },
-  hitWoodwork: { type: Number },//штанги
+  hitWoodwork: { type: Number }, // штанги
   averageBallPossession: { type: Number },
   accuratePassesPercentage: { type: Number },
   accurateOwnHalfPassesPercentage: { type: Number },
@@ -33,8 +33,8 @@ const teamStatSchema = new mongoose.Schema({
   totalLongBalls: { type: Number },
   totalCrosses: { type: Number },
   cleanSheets: { type: Number },
-  tackles: { type: Number },//отборы
-  interceptions: { type: Number },//перехваты
+  tackles: { type: Number }, // отборы
+  interceptions: { type: Number }, // перехваты
   errorsLeadingToGoal: { type: Number },
   penaltiesCommited: { type: Number },
   duelsWonPercentage: { type: Number },
@@ -49,7 +49,7 @@ const teamStatSchema = new mongoose.Schema({
   shotsFromInsideTheBoxAgainst: { type: Number },
   shotsOnTargetAgainst: { type: Number },
   yellowCardsAgainst: { type: Number },
-  matches: { type: Number }
+  matches: { type: Number },
 });
 
 module.exports = mongoose.model('teamStat', teamStatSchema);

@@ -13,7 +13,7 @@ const playerStatSchema = new mongoose.Schema({
   id: String,
   tournament: String,
   year: String,
-  data: Object
+  data: Object,
 
 });
 
