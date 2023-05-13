@@ -15,7 +15,7 @@ const {
   updateVideo, updatePlayerStats,
 } = require('./utils/api');
 
-const { PORT = 3004 } = process.env;
+const { PORT = 3007 } = process.env;
 const app = express();
 
 mongoose.connect('mongodb://localhost:27017/lfcstats', {
