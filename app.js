@@ -29,11 +29,11 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-app.get('/crash-test', () => {
+/* app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
-});
+}); */
 
 app.use('/', standingsRoute);
 app.use('/', apiCallsRouter);
@@ -53,10 +53,10 @@ app.listen(PORT, () => {
     updateTeamStats();
     updatePlayerStats();
     updateVideo();
-  }, 1000 * 60 * 60 * 6);
+  }, 1000 * 60 * 5);
 
   // every 3 hours
   setInterval(() => {
     updateNews();
-  }, 1000 * 60 * 60 * 3);
+  }, 1000 * 60 * 5);
 });
