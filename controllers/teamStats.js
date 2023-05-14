@@ -10,11 +10,11 @@ const getData = (req, res, next) => {
 
 const updateData = (req, res) => {
   const data = req.body;
-  teamStat.findOneAndUpdate({ id: '13415' }, {
+  teamStat.findOneAndUpdate({ id: '41886' }, {
     $set: {
-      tournament: 'UEFA Champions League',
-      year: '17/18',
-      id: '13415',
+      tournament: 'Premier League',
+      year: '22/23',
+      id: '41886',
       goalsScored: data.goalsScored,
       goalsConceded: data.goalsConceded,
       shots: data.shots,

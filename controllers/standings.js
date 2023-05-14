@@ -50,9 +50,9 @@ const updateStandings = (req, res) => {
         scoreDif: i.fields.goals_total.split(':')[0] - i.fields.goals_total.split(':')[1],
         points: i.fields.points_total,
       },
-    })
-      .then(() => {
-        console.log('Ok');
+    }, { upsert: true })
+      .then((i) => {
+        console.log(i);
       })
       .catch((err) => {
         console.log(err);

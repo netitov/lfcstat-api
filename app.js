@@ -53,10 +53,10 @@ app.listen(PORT, () => {
     updateTeamStats();
     updatePlayerStats();
     updateVideo();
-  }, 1000 * 60 * 5);
+  }, 1000 * 60 * 60 * 6);
 
   // every 3 hours
   setInterval(() => {
     updateNews();
-  }, 1000 * 60 * 5);
+  }, 1000 * 60 * 60 * 3);
 });
